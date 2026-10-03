@@ -1,0 +1,10 @@
+WORLD_SIZE = get_world_size()
+WORLD_AREA = WORLD_SIZE * WORLD_SIZE
+WORLD_CENTER = (WORLD_SIZE // 2, WORLD_SIZE // 2)
+WORLD_MAX_COORD = WORLD_SIZE - 1
+
+WATER_TARGET = 0.75
+DEBUG_MODE = False
+
+# grounds Entities can grow on
+CAN_GROW = {}
