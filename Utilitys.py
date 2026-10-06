@@ -15,13 +15,13 @@ def at_world_edge(edge_to_check = None):
 		return get_pos_x() == 0
 
 def go_to_x(tx,can_wrap = True, step = False):
-	world = get_world_size()
 	x = get_pos_x()
 
 	if get_pos_x() == tx:
 		return
 
 	if can_wrap:
+		world = get_world_size()
 		x1 = ((x - tx) % world) # left
 		x2 = ((tx - x) % world) # right
 		if x1 >= x2:
@@ -41,13 +41,13 @@ def go_to_x(tx,can_wrap = True, step = False):
 			move(d)
 	
 def go_to_y(ty,can_wrap = True, step = False):
-	world = get_world_size()
 	y = get_pos_y()
 
 	if get_pos_y() == ty:
 		return
 
 	if can_wrap:
+		world = get_world_size()
 		y1 = ((y - ty) % world) # down
 		y2 = ((ty - y) % world) # up
 		if y1 >= y2:
@@ -126,15 +126,22 @@ def move_to_neighbor(target):
 	elif tx == x - 1 and ty == y:
 		move(West)
 
-def get_distance():
-	pass
-
+def get_distance(c,t,can_wrap = False):
+	if c == t:
+		return 0
+	
+	if can_wrap:
+		world = get_world_size()
+		d1 = ((c - t) % world) # down
+		d2 = ((t - c) % world) # up
+		return min(d1,d2)
+	else:
+		return abs(c - t)
+		
 def get_manhattan(target,can_wrap = False):
-	pass
-
-
-def warp_cord(x_or_tuple,y = None):
-	pass
+	x,y = get_pos()
+	tx,ty = target
+	return get_distance(x,tx,can_wrap) + get_distance(y,ty,can_wrap)
 
 # ----- farming -----
 
