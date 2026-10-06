@@ -4,53 +4,67 @@ from Constents import *
 # ----- Movement/nav -----
 
 def at_world_edge(edge_to_check = None):
+	world = get_world_size() - 1
 	if edge_to_check == North:
-		return get_pos_y() == WORLD_MAX_COORD
+		return get_pos_y() == world
 	elif edge_to_check == East:
-		return get_pos_x() == WORLD_MAX_COORD
+		return get_pos_x() == world
 	elif edge_to_check == South:
 		return get_pos_y() == 0
 	elif edge_to_check == West:
 		return get_pos_x() == 0
 
-def go_to_x(x,auto = True):
+def go_to_x(tx,can_wrap = True, step = False):
 	world = get_world_size()
-	target = x
-	current_x = get_pos_x()
-	Direction = None
-	option_1 = ((current_x - target) % world)
-	option_2 = ((target - current_x) % world)
+	x = get_pos_x()
 
-	if option_1 >= option_2:
-		Direction = East
+	if get_pos_x() == tx:
+		return
+
+	if can_wrap:
+		x1 = ((x - tx) % world) # left
+		x2 = ((tx - x) % world) # right
+		if x1 >= x2:
+			d = East
+		else:
+			d = West
 	else:
-		Direction = West
-
-	if auto:
-		while get_pos_x() != target:
-			move(Direction)
+		if x < tx:
+			d = East
+		else:
+			d = West
+			
+	if step:
+		move(d)
 	else:
-		if get_pos_x() != target:
-			move(Direction)
-
-def go_to_y(y, auto = True):
+		while get_pos_x() != tx:
+			move(d)
+	
+def go_to_y(ty,can_wrap = True, step = False):
 	world = get_world_size()
-	target = y
-	current_y = get_pos_y()
-	Direction = None
-	option_1 = ((current_y - target) % world)
-	option_2 = ((target - current_y) % world)
+	y = get_pos_y()
 
-	if option_1 >= option_2:
-		Direction = North
+	if get_pos_y() == ty:
+		return
+
+	if can_wrap:
+		y1 = ((y - ty) % world) # down
+		y2 = ((ty - y) % world) # up
+		if y1 >= y2:
+			d = North
+		else:
+			d = South
 	else:
-		Direction = South
-	if auto:
-		while get_pos_y() != target:
-			move(Direction)
+		if y < ty:
+			d = North
+		else:
+			d = South
+			
+	if step:
+		move(d)
 	else:
-		if get_pos_y() != target:
-			move(Direction)
+		while get_pos_y() != ty:
+			move(d)
 
 def go_to_z(z,filler = Grounds.Dirt):
 	target = z
@@ -59,32 +73,65 @@ def go_to_z(z,filler = Grounds.Dirt):
 	while target < get_pos_z():
 		dig()
 
-def go_to_cords(x_or_tuple,y = None ,z = None):
+def go_to_cords(x_or_tuple,y = None,z = None):
+	includes_z = False
+	
 	if y == None:
-		target_x,target_y = x_or_tuple
+		if len(x_or_tuple) > 2:
+			includes_z = True
+			target_x,target_y,target_z = x_or_tuple
+		else:
+			target_x,target_y = x_or_tuple
 	else:
-		target_x = x_or_tuple
-		target_y = y
+		if z == None:
+			target_x = x_or_tuple
+			target_y = y
+		else:
+			includes_z = True
+			target_x = x_or_tuple
+			target_y = y
+			target_z = z
+			
 	while get_pos_x() != target_x or get_pos_y() != target_y:
 		if get_pos_x() != target_x:
-			go_to_x(target_x,False)
+			go_to_x(target_x,True,True)
 		if get_pos_y() != target_y:
-			go_to_y(target_y,False)
+			go_to_y(target_y,True,True)
+	if includes_z:
+		go_to_z(target_z)
 
 def get_pos(z = False):
-	pass
+	if z:
+		return (get_pos_x(),get_pos_y(),get_pos_z())
+	else:
+		return (get_pos_x(),get_pos_y())
 
 def opposite(dir):
+	opposite = {North:South,South:North,East:West,West:East}
+	return opposite[dir]
+
+def move_steps(dir, step_count):
+	for i in range(step_count):
+		move(dir)
+
+def move_to_neighbor(target):
+	x, y = pos()
+	tx, ty = target
+	if tx == x and ty == y + 1:
+		move(North)
+	elif tx == x + 1 and ty == y:
+		move(East)
+	elif tx == x and ty == y - 1:
+		move(South)
+	elif tx == x - 1 and ty == y:
+		move(West)
+
+def get_distance():
 	pass
 
-def move_steps():
+def get_manhattan(target,can_wrap = False):
 	pass
 
-def move_to_neighbor():
-	pass
-
-def get_manattan(target,can_wrap = False):
-	pass
 
 def warp_cord(x_or_tuple,y = None):
 	pass
