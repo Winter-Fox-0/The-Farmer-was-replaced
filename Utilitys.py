@@ -178,20 +178,10 @@ def water_tile():
 		use_item(Items.Water,w)
 
 def farm(tbp):
-	terrain = {
-	Entities.Bush:Grounds.Grassland,
-	Entities.Cactus:Grounds.Soil,
-	Entities.Carrot:Grounds.Soil,
-	Entities.Grass:Grounds.Grassland,
-	Entities.Pumpkin:Grounds.Soil,
-	Entities.Sunflower:Grounds.Soil,
-	Entities.Tree:Grounds.Grassland
-	}
-	if can_harvest():
-		harvest()
-	if get_ground_type() != terrain[tbp]:
-		till()
-	plant(tbp)
+	if get_entity_type():
+		harvest_on_ready()
+	
+	auto_plant(tbp)
 	water_tile()
 
 # ----- Mining -----
