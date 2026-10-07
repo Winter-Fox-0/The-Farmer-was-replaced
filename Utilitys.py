@@ -150,17 +150,33 @@ def harvest_on_ready():
 		pass
 	harvest()
 
-def replant():
-	pass
+def ensure_ground(p):
+
+	if p not in PLANTABLE:
+		return
+
+	if get_ground_type() in CAN_GROW[p]:
+		return
+	
+	if p == Entities.Rice:
+		while get_ground_type() != Grounds.Clay:
+			dig()
+	else:
+		if get_ground_type() not in TILLABLE:
+			dig()
+			place(Grounds.Grassland)
+		if get_ground_type() not in CAN_GROW[p]:
+			till()
+
+def auto_plant(p):
+	ensure_ground(p)
+	plant(p)
 
 def water_tile():
-	while num_items(Items.Water) > 1 and get_water() < WATER_TARGET:
-		use_item(Items.Water)
+	w = ceil((WATER_TARGET - get_water()) / 0.25)
+	if get_water() < WATER_TARGET and num_items(Items.Water) >= w:
+		use_item(Items.Water,w)
 
-def ensure_ground():
-	pass
-
-# rename farm
 def farm(tbp):
 	terrain = {
 	Entities.Bush:Grounds.Grassland,
@@ -266,6 +282,19 @@ def round(value):
 		return (value + 0.5) // 1
 	else:
 		return (value - 0.5) // 1
+
+def floor(value):
+	if value >= 0:
+		return value // 1
+	else:
+		return ((value * -1) // 1) * -1
+		
+
+def ceil(value):
+	if value <= 0:
+		return value // 1
+	else:
+		return ((value * -1) // 1) * -1
 
 def copy_list():
 	pass
