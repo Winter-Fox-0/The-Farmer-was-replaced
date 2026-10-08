@@ -186,8 +186,10 @@ def farm(tbp):
 
 # ----- Mining -----
 
-def flatten_to_level():
-	pass
+def flatten_to_level(l,filler = Grounds.Dirt):
+	while get_pos_z() != l:
+		if get_pos_z() > l:
+			dig()
 
 def flatten_to_block():
 	pass
@@ -199,12 +201,6 @@ def get_mean_height():
 	pass
 
 # ----- Scanner -----
-
-def ground_in_list(list):
-	pass
-
-def entity_in_list(list):
-	pass
 
 def check_surrounding_for(block):
 	pass
@@ -250,11 +246,12 @@ def wait_all_advance(list_of_drones):
 def act_tile():
 	pass
 
-def act_row():
+def act_row(f,invert = False):
 	pass
 
-def act_column():
+def act_column(f,invert = False):
 	pass
+
 
 def act_world(func):
 	pass
