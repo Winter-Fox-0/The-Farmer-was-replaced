@@ -234,7 +234,7 @@ def on_same_height(hight_map,dir):
 def summon_swarm(func,args):
 	pass
 
-def arg_parser():
+def package_args():
 	pass
 
 def wait_all():
@@ -243,18 +243,84 @@ def wait_all():
 def wait_all_advance(list_of_drones):
 	pass
 
-def act_tile():
-	pass
+def act_tile(f,args,pos):
+	
+	# no *args, workaround below
+	def act():
+		if len(args) == 0:
+			f()
+		elif len(args) == 1:
+			f(args[0]) 
+		elif len(args) == 2:
+			f(args[0],args[1])
+		elif len(args) == 3:
+			f(args[0],args[1],args[2])
+	
+	go_to_cords(pos)
+	act()
 
-def act_row(f,invert = False):
-	pass
+def act_row(f,args = [],invert = False):
+	# no *args, workaround below
+	def act():
+		if len(args) == 0:
+			f()
+		elif len(args) == 1:
+			f(args[0]) 
+		elif len(args) == 2:
+			f(args[0],args[1])
+		elif len(args) == 3:
+			f(args[0],args[1],args[2])
+	
+	if not invert:
+		dir = East
+	else:
+		dir = West
+	
+	for i in range(get_world_size()):
+		act()
+		move(dir)
 
-def act_column(f,invert = False):
-	pass
+
+def act_column(f,args = [],invert = False):
+		# no *args, workaround below
+	def act():
+		if len(args) == 0:
+			f()
+		elif len(args) == 1:
+			f(args[0]) 
+		elif len(args) == 2:
+			f(args[0],args[1])
+		elif len(args) == 3:
+			f(args[0],args[1],args[2])
+	
+	if not invert:
+		dir = North
+	else:
+		dir = East
+	
+	for i in range(get_world_size()):
+		act()
+		move(dir)
 
 
-def act_world(func):
-	pass
+def act_world(f,args = []):
+	
+	# no *args, workaround below
+	def act():
+		if len(args) == 0:
+			f()
+		elif len(args) == 1:
+			f(args[0]) 
+		elif len(args) == 2:
+			f(args[0],args[1])
+		elif len(args) == 3:
+			f(args[0],args[1],args[2])
+	
+	for i in range(get_world_size()):
+		for j in range(get_world_size()):
+			act()
+			move(East)
+		move(North)
 
 def check_for_command():
 	pass
