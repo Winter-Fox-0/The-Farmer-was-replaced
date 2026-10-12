@@ -190,15 +190,25 @@ def flatten_to_level(l,filler = Grounds.Dirt):
 	while get_pos_z() != l:
 		if get_pos_z() > l:
 			dig()
+		else:
+			place(filler)
 
-def flatten_to_block():
-	pass
-
-def will_collapse(dir):
-	pass
+def flatten_to_block(g):
+	# make a specific one for loam/perlite due to rocks
+	while get_ground_type() != g:
+		dig()
 
 def get_mean_height():
-	pass
+	dir = [North,East,South,West]
+	values = []
+	values.append(get_pos_z())
+	for d in dir:
+		if not at_world_edge(d):
+			values.append(get_pos_z(d))
+	i = 0
+	for v in values:
+		i += v
+	return i / len(values)
 
 # ----- Scanner -----
 
@@ -331,10 +341,7 @@ def check_break():
 #----- missing py functions -----
 
 def round(value):
-	if value >= 0:
 		return (value + 0.5) // 1
-	else:
-		return (value - 0.5) // 1
 
 def floor(value):
 	if value >= 0:
