@@ -1,8 +1,8 @@
-from Helpers import *
+from Utilitys import *
 from Constents import *
 mushrooms = []
 height_map = []
-Go_to_cords(0,WORLD_MAX_COORD)
+go_to_cords(0,WORLD_MAX_COORD)
 for i in range(WORLD_SIZE):
 	m = []
 	h = []

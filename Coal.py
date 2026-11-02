@@ -74,12 +74,12 @@ def waiter():
 def check_for_break(create = False):
 	here = create_cords()
 	go_to_cords(0,0)
-	if get_ground_type() == Grounds.Red_Block:
+	if get_ground_type() == Grounds.Block_Red:
 		go_to_cords(here)
 		return True
 	else:
 		if create:
-			place(Grounds.Red_Block)
+			place(Grounds.Block_Red)
 		go_to_cords(here)
 		return False
 		

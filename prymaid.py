@@ -4,7 +4,7 @@ def main():
 	clear()
 	jump(Unlocks.Pyramid)
 	uncover()
-	while get_ground_type() != Grounds.Red_block:
+	while get_ground_type() != Grounds.Block_Red:
 		uncover()
 	found_at = follow_path()
 	level_to_sandstone()
@@ -39,10 +39,10 @@ def search(h):
 		if get_ground_type() == Grounds.Sand:
 			found_at = get_pos_x()
 			go_to_cords(0,0)
-			if get_ground_type() != Grounds.Red_block:
-				place(Grounds.Red_block)
+			if get_ground_type() != Grounds.Block_Red:
+				place(Grounds.Block_Red)
 				go_to_x(found_at)
-				place(Grounds.Blue_block)
+				place(Grounds.Block_Blue)
 			else:
 				break
 		move(North)
@@ -65,7 +65,7 @@ def level(h):
 		pass
 
 def follow_path():
-	while get_ground_type() != Grounds.Blue_block:
+	while get_ground_type() != Grounds.Block_Blue:
 		move(East)
 	while get_ground_type() != Grounds.Sand:
 		move(North)

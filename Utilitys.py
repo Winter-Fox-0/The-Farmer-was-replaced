@@ -306,7 +306,7 @@ def act_column(f,args = [],invert = False):
 	if not invert:
 		dir = North
 	else:
-		dir = East
+		dir = South
 	
 	for i in range(get_world_size()):
 		act()
@@ -349,7 +349,6 @@ def floor(value):
 	else:
 		return ((value * -1) // 1) * -1
 		
-
 def ceil(value):
 	if value <= 0:
 		return value // 1

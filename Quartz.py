@@ -10,7 +10,7 @@ while num_items(Items.Iron) >= 4:
 	move(North)
 	dC = prospect_quartz()
 	move(South)
-	place(Grounds.Blue_Block)
+	place(Grounds.Block_Blue)
 	dD = prospect_quartz()
 	dig()
 	
@@ -27,7 +27,7 @@ while num_items(Items.Iron) >= 4:
 	while get_ground_type() == Grounds.Quartz:
 		dig()
 	while depth > get_pos_z():
-		place(Grounds.Red_Block)
+		place(Grounds.Block_Red)
 
 	
 	

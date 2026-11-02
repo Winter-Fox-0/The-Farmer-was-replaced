@@ -1,7 +1,5 @@
 clear()
-for i in range(5):
-	move(North)
-	move(East)
+move(North)
 till()
 while True:
 	plant(Entities.Bamboo)
