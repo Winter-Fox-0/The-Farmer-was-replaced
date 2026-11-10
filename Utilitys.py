@@ -173,7 +173,7 @@ def auto_plant(p):
 
 def water_tile():
 	w = ceil((WATER_TARGET - get_water()) / 0.25)
-	if get_water() < WATER_TARGET and num_items(Items.Water) >= w:
+	if get_water() < WATER_TARGET and num_items(Items.Water) >= w and w > 0:
 		use_item(Items.Water,w)
 
 def farm(tbp):
@@ -183,7 +183,7 @@ def farm(tbp):
 	auto_plant(tbp)
 	water_tile()
 
-# ----- Mining -----
+# ----- Mining ----- /
 
 def dig_to_level(l,filler = Grounds.Dirt):
 	while get_pos_z() != l:
@@ -192,18 +192,31 @@ def dig_to_level(l,filler = Grounds.Dirt):
 		else:
 			place(filler)
 
-
 def dig_to_block(g):
 		while get_ground_type() != g:
 			dig()
 
-def flatten_to_level(l,md,filler = Grounds.Dirt):
-	pass
+def flatten_to_level(l,md = True,filler = Grounds.Dirt):
+	if md:
+		# To add- multidrone support
+		print("Multidrone currently isn't supported")
+		return
+	else:
+		act_world(dig_to_level,[l,filler])
 
-def flatten_to_block(g,md):
-	# make a specific one for loam/perlite due to rocks
-	pass
+def flatten_to_block(g,md = True):
 
+	if g == Grounds.Perlite or g == Grounds.Loam:
+		Prep_advanced_soil(g,md)
+		return
+	
+	if md:
+		# To add- multidrone support
+		print("Multidrone currently isn't supported")
+		return
+	else:
+		act_world(dig_to_block,[g])
+	
 def Prep_advanced_soil(g,md = True):
 	
 	if g != Grounds.Perlite and g != Grounds.Loam:
@@ -217,7 +230,7 @@ def Prep_advanced_soil(g,md = True):
 	if md:
 		# To add- multidrone support
 		print("Multidrone currently isn't supported")
-		pass
+		return
 
 
 	else:
@@ -300,15 +313,37 @@ def on_same_height(hight_map,dir):
 	
 # ----- Drone Management -----
 
-def summon_swarm(func,args):
-	pass
+def summon_swarm(f,args = []):
 
+		# no *args, workaround below
+	def act():
+		if len(args) == 0:
+			f()
+		elif len(args) == 1:
+			f(args[0]) 
+		elif len(args) == 2:
+			f(args[0],args[1])
+		elif len(args) == 3:
+			f(args[0],args[1],args[2])
+	def drone_act():
+		for i in range(get_world_size()):
+			act()
+			move(East)
+
+	for i in range(get_world_size()):
+		if num_drones() < max_drones():
+			spawn_drone(drone_act)
+		else:
+			drone_act()
+		move(North)
+		
 def wait_all():
 	while num_drones() > 1:
 		pass
 
 def wait_all_advance(list_of_drones):
-	pass
+	for i in list_of_drones:
+		wait_for(i)
 
 def act_tile(f,args,pos):
 	
@@ -347,7 +382,6 @@ def act_row(f,args = [],invert = False):
 		act()
 		move(dir)
 
-
 def act_column(f,args = [],invert = False):
 		# no *args, workaround below
 	def act():
@@ -368,7 +402,6 @@ def act_column(f,args = [],invert = False):
 	for i in range(get_world_size()):
 		act()
 		move(dir)
-
 
 def act_world(f,args = []):
 	

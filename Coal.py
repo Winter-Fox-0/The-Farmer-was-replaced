@@ -135,6 +135,7 @@ def temp():
 			return
 
 def mine_east(script):
+		change_hat(Hats.Coal_Hat)
 		spawned= False
 		move(East)
 		while get_ground_type() == Grounds.Coal:
@@ -147,6 +148,7 @@ def mine_east(script):
 			move(North)
 			
 def mine_west(script):
+	change_hat(Hats.Coal_Hat)
 	spawned = False
 	move(West)
 	while get_ground_type() == Grounds.Coal:
@@ -159,6 +161,7 @@ def mine_west(script):
 		move(North)	
 
 def mine_main():
+	change_hat(Hats.Coal_Hat)
 	spawned_east = False
 	spawned_west = False
 	while get_ground_type() == Grounds.Coal:

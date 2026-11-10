@@ -6,29 +6,14 @@ go_to_cords(world // 2, world // 2)
 
 def rice_prep():
 	go_to_cords(0,0)
-	for j in range(get_world_size()):
-		for i in range(get_world_size()):
-			while get_ground_type() != Grounds.clay:
-				dig()
-			move(North)
-		move(East)
+	summon_swarm(dig_to_block,[Grounds.Clay])
 
 def rice_plant():
 	go_to_cords(0,0)
-	for j in range(get_world_size()):
-		for i in range(get_world_size()):
-			plant(Entities.Rice)
-			move(North)
-		move(East)
+	summon_swarm(farm,[Entities.Rice])
 
 def harvest_rice():
-	for j in range(get_world_size()):
-		for i in range(get_world_size()):
-			while not can_harvest():
-				pass
-			harvest()
-			move(North)
-		move(East)
+	summon_swarm(harvest_on_ready)
 	
 while True:
 	while get_ground_type() != Grounds.clay and get_ground_type() != Grounds.Dry_Rice_Terrace:
