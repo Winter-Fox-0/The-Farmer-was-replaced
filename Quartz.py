@@ -1,4 +1,5 @@
 from Utilitys import *
+# NOT WORKING
 clear()
 jump(Unlocks.Quartz)
 depth = get_pos_z()

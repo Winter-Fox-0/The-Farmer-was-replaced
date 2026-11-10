@@ -6,6 +6,7 @@ WORLD_MAX_COORD = WORLD_SIZE - 1
 
 WATER_TARGET = 0.75
 
+DIRECTIONS = [North,East,South,West]
 # all plantable Entities:
 PLANTABLE = [Entities.Bamboo,Entities.Bush,Entities.Cactus,
 Entities.Carrot,Entities.Grass,Entities.Pumpkin,

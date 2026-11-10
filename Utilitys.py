@@ -1,7 +1,6 @@
-## rename to Utilitys
 from Constents import *
 
-# ----- Movement/nav -----
+# ----- Movement/nav ----- /
 
 def at_world_edge(edge_to_check = None):
 	world = get_world_size() - 1
@@ -143,7 +142,7 @@ def get_manhattan(target,can_wrap = False):
 	tx,ty = target
 	return get_distance(x,tx,can_wrap) + get_distance(y,ty,can_wrap)
 
-# ----- farming -----
+# ----- farming ----- /
 
 def harvest_on_ready():
 	while not can_harvest():
@@ -186,17 +185,77 @@ def farm(tbp):
 
 # ----- Mining -----
 
-def flatten_to_level(l,filler = Grounds.Dirt):
+def dig_to_level(l,filler = Grounds.Dirt):
 	while get_pos_z() != l:
 		if get_pos_z() > l:
 			dig()
 		else:
 			place(filler)
 
-def flatten_to_block(g):
+
+def dig_to_block(g):
+		while get_ground_type() != g:
+			dig()
+
+def flatten_to_level(l,md,filler = Grounds.Dirt):
+	pass
+
+def flatten_to_block(g,md):
 	# make a specific one for loam/perlite due to rocks
+	pass
+
+def Prep_advanced_soil(g,md = True):
+	
+	if g != Grounds.Perlite and g != Grounds.Loam:
+		return
+
 	while get_ground_type() != g:
 		dig()
+
+	safe_level = get_pos_z() + 4
+
+	if md:
+		# To add- multidrone support
+		print("Multidrone currently isn't supported")
+		pass
+
+
+	else:
+		go_to_cords(0,0)
+		act_world(dig_to_level,[safe_level,Grounds.Rock])
+
+		found = False
+		while not found:
+			for x in range(get_world_size()):
+				for y in range(get_world_size()):
+					dig()
+					if get_ground_type() == g:
+						found = True
+					move(North)
+				move(East)
+		
+		ah = get_hardness() + 2
+		for c in range(4):
+			for x in range(get_world_size()):
+				for y in range(get_world_size()):
+					if get_ground_type() != g:
+						safe = True
+						for i in DIRECTIONS:
+							if not at_world_edge(i):
+								if get_ground_type(i) == g:
+									if get_pos_z(i) > get_pos_z():
+										safe = False
+										break
+						if safe:
+							dig()
+					move(North)
+				move(East)
+		for x in range(get_world_size()):
+			for y in range(get_world_size()):
+				if get_ground_type() != g:
+					place(Grounds.Grassland)
+				move(North)
+			move(East)
 
 def get_mean_height():
 	dir = [North,East,South,West]
@@ -244,11 +303,9 @@ def on_same_height(hight_map,dir):
 def summon_swarm(func,args):
 	pass
 
-def package_args():
-	pass
-
 def wait_all():
-	pass
+	while num_drones() > 1:
+		pass
 
 def wait_all_advance(list_of_drones):
 	pass
